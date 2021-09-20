@@ -16,42 +16,70 @@
         <h1>Weather Dashboard</h1>
     </section>
 
-    <section class="container">
+    <main>
         <div class="row">
-            <div id="search" class="col-3">
-                <div class="card">
-                    <h2>Search for a City:</h2>
-                    <form id="location-form" class="card-body">
-                        <label for="locationSearch"></label>
-                        <input type="text" placeholder="San Diago" name="location" id="locationSearch" autofocus="true" class="form-input" />
-                        <button type="submit" class="btn">Search</button>
-                    </form>
-                </div>
-
+            <section class="col-3" id="search-form">
+                <form>
+                    <div class="d-grid">
+                        <label for="location-search">Search for a City:</label></div>
+                    <div class="d-grid gap-3">
+                        <input type="text" placeholder="San Diago" name="location" id="location-search" autofocus="true" class="form-input" />
+                    </div>
+                    <div class="d-grid gap-3">
+                        <button type="submit" class="btn btn-primary" id="search-form">
+                            Search
+                        </button>
+                    </div>
+                </form>
                 <hr>
+                <!-- saved searches -->
+                <li id="saved-search"></li>
+            </section>
 
-                <div>
-                    <!-- local storage buttons [#locationSearch]-->
-                    <!-- saved searches -->
-                    <li id="savedSearch"></li>
-                </div>
-            </div>
-
-            <div id="result" class="col-9">
-
-                <div id="currentWeather">
+            <section id="result" class="col-9">
+                <div id="currentWeather" class="card">
                     <!-- locationSearch currentWeather [locationSearch][today][icon][temp][wind][humidity][uv index]-->
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <span id="location-search">Location</span>
+                            <span id="currentDate">(M/D/YYYY)</span>
+                            <img id="currentIcon" src=""></img>
+                        </h2>
+                        <p>Temp:
+                            <span id="currentTemp"></span>
+                        </p>
+                        <p>Wind:
+                            <span id="currentWind"></span>
+                        </p>
+                        <p>Humidity:
+                            <span id="currentHum"></span>
+                        </p>
+                        <p>UV Index:
+                            <span id="currentUVI"></span>
+                        </p>
+                    </div>
                 </div>
                 <div class="forecast">
                     <h3>5-Day Forecast:</h3>
-                    <div id="forecast-container" class="list-group">
+                    <div id="forecast-container" class="card list-group">
                         <!-- forecastCard [date][icon][temp][wind][humidity]-->
+                        <p>
+                            <span id="date">(M/D/YYYY)</span>
+                            <img id="forecastIcon" src=""></img>
+                        </p>
+                        <p>Temp:
+                            <span id="forecastTemp"></span>
+                        </p>
+                        <p>Wind:
+                            <span id="forecastWind"></span>
+                        </p>
+                        <p>Humidity:
+                            <span id="forecastHum"></span>
+                        </p>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
-    </section>
-
     </main>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

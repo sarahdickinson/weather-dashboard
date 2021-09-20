@@ -5,46 +5,39 @@ var apiKey = "appid=264dbcaa3899de05eeadc78d68ba06dc";
 var units = "units=imperial";
 
 
-// select from html element
-var searchForm = $("#location-form");
-var searchHistory = $("#saved-search");
+// select html element
+var searchForm = $("#search-form");
+var savedSearch = $("#saved-search");
 
 // get current weather info
 var getCurrent = function(locationSearch) {
 
-    // formate the open weather api url
+    // format the open weather api url
     var apiUrlCurrent =
         "https://api.openweathermap.org/data/2.5/weather?q=" + locationSearch + "&" + apiKey + "&" + units;
 
-    // make a request to url
-    fetch(apiUrlCurrent).then(function(response) {
+    // request to url
+    fetch(apiUrlCurrent).then(async function(response) {
         if (response.ok) {
-            return response.json().then(function(response) {
-                $("#locationSearch").html(response.name);
-
-                // display current data
-                var unixTime = response.dt;
-                var date = moment.unix(unixTime).format("M/D/YY");
-                $("#today").html(date);
-
-                var iconUrl =
-                    "http://openweathermap.org/img/wn/" +
-                    response.weather[0].icon +
-                    "@2x.png";
-                $("#currentIcon").attr("src", iconUrl);
-
-                $("#currentTemp").html(response.main.temp + " \u00B0F");
-                $("#currentHum").html(response.main.humidity + " %");
-                $("#currentWind").html(response.wind.speed + " MPH");
-
-                // return coords for forecast fetch
-                var lat = response.coord.lat;
-                var lon = response.coord.lon;
-
-                //call functions
-                getUVI(lat, lon);
-                getForecast(lat, lon);
-            });
+            const response_1 = await response.json();
+            $("#location-search").html(response_1.name);
+            // display current data
+            var unixTime = response_1.dt;
+            var date = moment.unix(unixTime).format("M/D/YYYY");
+            $("#currentDate").html(date);
+            var iconUrl = "http://openweathermap.org/img/wn/" +
+                response_1.weather[0].icon +
+                "@2x.png";
+            $("#currentIcon").attr("src", iconUrl);
+            $("#currentTemp").html(response_1.main.temp + " \u00B0F");
+            $("#currentWind").html(response_1.wind.speed + " MPH");
+            $("#currentHum").html(response_1.main.humidity + " %");
+            // return coords for forecast fetch
+            var lat = response_1.coord.lat;
+            var lon = response_1.coord.lon;
+            //call functions
+            getUVI(lat, lon);
+            getForecast(lat, lon);
         } else {
             alert("Try that again. Your query was not recongized.");
         }
@@ -54,11 +47,11 @@ var getCurrent = function(locationSearch) {
 // get current UVI
 var getUVI = function(lat, lon) {
 
-    // formate the open weather api url
+    // format the open weather api url
     var apiUrlUVI =
         "https://api.openweathermap.org/data/2.5/uvi?" + apiKey + "&lat=" + lat + "&lon=" + lon + "&" + units;
 
-    // make a get request to url
+    // get request to url
     fetch(apiUrlUVI)
         .then(function(response) {
             return response.json();
@@ -81,12 +74,12 @@ var getUVI = function(lat, lon) {
 // get forecast weather info
 var getForecast = function(lat, lon) {
 
-    // formate the open weather api url
+    // format the open weather api url
     var apiUrlForecast =
         "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly&" +
         apiKey + "&" + units;
 
-    // make a get request to url
+    // get request to url
     fetch(apiUrlForecast)
         .then(function(response) {
             return response.json();
@@ -96,20 +89,23 @@ var getForecast = function(lat, lon) {
 
                 //display forecast data
                 var unixTime = response.daily[i].dt;
-                var date = moment.unix(unixTime).format("MM/DD/YY");
-                $("#Date" + i).html(date);
+                var date = moment.unix(unixTime).format("M/D/YYYY");
+                $("#date" + i).html(date);
 
                 var iconUrl =
                     "http://openweathermap.org/img/wn/" +
                     response.daily[i].weather[0].icon +
                     "@2x.png";
-                $("#currentIcon" + i).attr("src", iconUrl);
+                $("#forecastIcon" + i).attr("src", iconUrl);
 
                 var temp = response.daily[i].temp.day + " \u00B0F";
-                $("#currentTemp" + i).html(temp);
+                $("#forecastTemp" + i).html(temp);
+
+                var wind = response.daily[i].wind_speed + " MPH";
+                $("#forecastWind" + i).html(wind);
 
                 var humidity = response.daily[i].humidity;
-                $("#currenthum" + i).html(humidity + " %");
+                $("#forecastHum" + i).html(humidity + " %");
             }
         });
 };
@@ -131,7 +127,7 @@ var loadSavedCity = function() {
     }
     for (var i = 0; i < searchHistory.length; i++) {
         var locationSearchBtn = creatBtn(searchHistory[i]);
-        searchHistory.append(locationSearchBtn);
+        savedSearch.append(locationSearchBtn);
     }
 };
 
@@ -171,7 +167,7 @@ var createlocationSearchBtn = function(locationSearch) {
     // check the locationSearch parameter against all children of searchHistory
     if (saveCities.length == 1) {
         var locationSearchBtn = creatBtn(locationSearch);
-        searchHistory.prepend(locationSearchBtn);
+        savedSearch.prepend(locationSearchBtn);
     } else {
         for (var i = 1; i < saveCities.length; i++) {
             if (locationSearch.toLowerCase() == saveCities[i].toLowerCase()) {
@@ -180,13 +176,13 @@ var createlocationSearchBtn = function(locationSearch) {
         }
 
         // check elements in list
-        if (searchHistory[0].childElementCount < searchMax) {
+        if (savedSearch[0].childElementCount < searchMax) {
             var locationSearchBtn = creatBtn(locationSearch);
         } else {
-            searchHistory[0].removeChild(searchHistory[0].lastChild);
+            savedSearch[0].removeChild(savedSearch[0].lastChild);
             var locationSearchBtn = creatBtn(locationSearch);
         }
-        searchHistory.prepend(locationSearchBtn);
+        savedSearch.prepend(locationSearchBtn);
         $(":button.list-group-item-action").on("click", function() {
             BtnClickHandler(event);
         });
@@ -201,7 +197,7 @@ var formSubmitHandler = function(event) {
     event.preventDefault();
 
     // searach
-    var locationSearch = $("#locationSearch").val().trim();
+    var locationSearch = $("#location-search").val().trim();
     var loadHistory = savelocationSearch(locationSearch);
     getCurrent(locationSearch);
     if (loadHistory == 1) {
@@ -217,7 +213,7 @@ var BtnClickHandler = function(event) {
 };
 
 // call functions on submit
-$("#location-form").on("submit", function() {
+$("#search-form").on("submit", function() {
     formSubmitHandler(event);
 });
 $(":button.list-group-item-action").on("click", function() {
