@@ -114,7 +114,7 @@ var getForecast = function(lat, lon) {
 var creatBtn = function(btnText) {
     var btn = $("<button>")
         .text(btnText)
-        .addClass("list-group-item list-group-item-action bg-light")
+        .addClass("list-group-item list-group-item-action bg-light text-capitalize")
         .attr("type", "submit");
     return btn;
 };
