@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/style.css" />
+    <title>Weather Dashboard</title>
+</head>
+
+<body>
+
+    <section id="header">
+        <h1>Weather Dashboard</h1>
+    </section>
+
+    <section class="container">
+        <div class="row">
+            <div id="search" class="col-3">
+                <div class="card">
+                    <h2>Search for a City:</h2>
+                    <form id="location-form" class="card-body">
+                        <label for="locationSearch"></label>
+                        <input type="text" placeholder="San Diago" name="location" id="locationSearch" autofocus="true" class="form-input" />
+                        <button type="submit" class="btn">Search</button>
+                    </form>
+                </div>
+
+                <hr>
+
+                <div>
+                    <!-- local storage buttons [#locationSearch]-->
+                    <!-- saved searches -->
+                    <li id="savedSearch"></li>
+                </div>
+            </div>
+
+            <div id="result" class="col-9">
+
+                <div id="currentWeather">
+                    <!-- locationSearch currentWeather [locationSearch][today][icon][temp][wind][humidity][uv index]-->
+                </div>
+                <div class="forecast">
+                    <h3>5-Day Forecast:</h3>
+                    <div id="forecast-container" class="list-group">
+                        <!-- forecastCard [date][icon][temp][wind][humidity]-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script src="./assets/script.js"></script>
+
+</body>
+
+</html>
