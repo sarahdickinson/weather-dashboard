@@ -9,108 +9,112 @@ var units = "units=imperial";
 var searchForm = $("#location-form");
 var searchHistory = $("#saved-search");
 
-//-------------------------- get weather info from OpenWeather starts here ------------------------------//
+// get current weather info
 var getCurrent = function(locationSearch) {
-    // formate the OpenWeather api url
+
+    // formate the open weather api url
     var apiUrlCurrent =
         "https://api.openweathermap.org/data/2.5/weather?q=" + locationSearch + "&" + apiKey + "&" + units;
+
     // make a request to url
     fetch(apiUrlCurrent).then(function(response) {
         if (response.ok) {
             return response.json().then(function(response) {
                 $("#locationSearch").html(response.name);
-                // display date
+
+                // display current data
                 var unixTime = response.dt;
                 var date = moment.unix(unixTime).format("M/D/YY");
                 $("#today").html(date);
-                // display weather icon
+
                 var iconUrl =
                     "http://openweathermap.org/img/wn/" +
                     response.weather[0].icon +
                     "@2x.png";
-                $("#weatherIconToday").attr("src", iconUrl);
-                $("#tempToday").html(response.main.temp + " \u00B0F");
-                $("#humidityToday").html(response.main.humidity + " %");
-                $("#windSpeedToday").html(response.wind.speed + " MPH");
-                // return coordinate for getUVIndex to call
+                $("#currentIcon").attr("src", iconUrl);
+
+                $("#currentTemp").html(response.main.temp + " \u00B0F");
+                $("#currentHum").html(response.main.humidity + " %");
+                $("#currentWind").html(response.wind.speed + " MPH");
+
+                // return coords for forecast fetch
                 var lat = response.coord.lat;
                 var lon = response.coord.lon;
-                getUVIndex(lat, lon);
+
+                //call functions
+                getUVI(lat, lon);
                 getForecast(lat, lon);
             });
         } else {
-            alert("Please provide a valid city name.");
+            alert("Try that again. Your query was not recongized.");
         }
     });
 };
-var getUVIndex = function(lat, lon) {
-    // formate the OpenWeather api url
-    var apiUrl =
-        "https://api.openweathermap.org/data/2.5/uvi?" +
-        apiKey +
-        "&lat=" +
-        lat +
-        "&lon=" +
-        lon +
-        "&" +
-        units;
-    fetch(apiUrl)
+
+// get current UVI
+var getUVI = function(lat, lon) {
+
+    // formate the open weather api url
+    var apiUrlUVI =
+        "https://api.openweathermap.org/data/2.5/uvi?" + apiKey + "&lat=" + lat + "&lon=" + lon + "&" + units;
+
+    // make a get request to url
+    fetch(apiUrlUVI)
         .then(function(response) {
             return response.json();
         })
         .then(function(response) {
-            // remove all class background
-            $("#UVIndexToday").removeClass();
-            $("#UVIndexToday").html(response.value);
+
+            // remove all classes
+            $("#currentUVI").removeClass();
+            $("#currentUVI").html(response.value);
             if (response.value < 3) {
-                $("#UVIndexToday").addClass("p-1 rounded bg-success text-white");
+                $("#currentUVI").addClass("p-1 rounded bg-success text-white");
             } else if (response.value < 8) {
-                $("#UVIndexToday").addClass("p-1 rounded bg-warning text-white");
+                $("#currentUVI").addClass("p-1 rounded bg-warning text-white");
             } else {
-                $("#UVIndexToday").addClass("p-1 rounded bg-danger text-white");
+                $("#currentUVI").addClass("p-1 rounded bg-danger text-white");
             }
         });
 };
+
+// get forecast weather info
 var getForecast = function(lat, lon) {
-    // formate the OpenWeather api url
-    var apiUrl =
-        "https://api.openweathermap.org/data/2.5/onecall?" +
-        "lat=" +
-        lat +
-        "&lon=" +
-        lon +
-        "&exclude=current,minutely,hourly" +
-        "&" +
-        apiKey +
-        "&" +
-        units;
-    fetch(apiUrl)
+
+    // formate the open weather api url
+    var apiUrlForecast =
+        "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly&" +
+        apiKey + "&" + units;
+
+    // make a get request to url
+    fetch(apiUrlForecast)
         .then(function(response) {
             return response.json();
         })
         .then(function(response) {
             for (var i = 1; i < 6; i++) {
-                //display date
+
+                //display forecast data
                 var unixTime = response.daily[i].dt;
                 var date = moment.unix(unixTime).format("MM/DD/YY");
                 $("#Date" + i).html(date);
-                // display weather icon
+
                 var iconUrl =
                     "http://openweathermap.org/img/wn/" +
                     response.daily[i].weather[0].icon +
                     "@2x.png";
                 $("#currentIcon" + i).attr("src", iconUrl);
-                // display temperature
+
                 var temp = response.daily[i].temp.day + " \u00B0F";
                 $("#currentTemp" + i).html(temp);
-                // display humidity
+
                 var humidity = response.daily[i].humidity;
                 $("#currenthum" + i).html(humidity + " %");
             }
         });
 };
-//-------------------------- get weather info from OpenWeather ends here ------------------------------//
-//-------------------------------------- create button starts  ----------------------------------------//
+
+// create button
 var creatBtn = function(btnText) {
     var btn = $("<button>")
         .text(btnText)
@@ -118,8 +122,8 @@ var creatBtn = function(btnText) {
         .attr("type", "submit");
     return btn;
 };
-//-------------------------------------- create button ends  ------------------------------------------//
-//---------------------- load saved citeis names from localStorage starts here ------------------------//
+
+// load history from localStorage
 var loadSavedCity = function() {
     searchHistory = JSON.parse(localStorage.getItem("weatherData"));
     if (searchHistory == null) {
@@ -130,8 +134,8 @@ var loadSavedCity = function() {
         searchHistory.append(locationSearchBtn);
     }
 };
-//---------------------- load saved citeis names from localStorage ends here ------------------------//
-//----------------------- save searched city in to local storage starts here --------------------------//
+
+// save history in localStorage
 var savelocationSearch = function(locationSearch) {
     var loadHistory = 0;
     searchHistory = JSON.parse(localStorage.getItem("weatherData"));
@@ -145,10 +149,12 @@ var savelocationSearch = function(locationSearch) {
             }
         }
         if (searchHistory.length < searchMax) {
+
             // create object
             searchHistory.unshift(locationSearch);
         } else {
-            // control the length of the array. do not allow to save more than 10 cities
+
+            // control the length of the array
             searchHistory.pop();
             searchHistory.unshift(locationSearch);
         }
@@ -157,10 +163,11 @@ var savelocationSearch = function(locationSearch) {
     loadHistory = 1;
     return loadHistory;
 };
-//------------------------ save searched city in to local storage ends here ---------------------------//
-//-------------------------- create button with searched city starts here -----------------------------//
+
+// create buttom from saved search
 var createlocationSearchBtn = function(locationSearch) {
     var saveCities = JSON.parse(localStorage.getItem("weatherData"));
+
     // check the locationSearch parameter against all children of searchHistory
     if (saveCities.length == 1) {
         var locationSearchBtn = creatBtn(locationSearch);
@@ -171,7 +178,8 @@ var createlocationSearchBtn = function(locationSearch) {
                 return;
             }
         }
-        // check whether there are already have too many elements in this list of button
+
+        // check elements in list
         if (searchHistory[0].childElementCount < searchMax) {
             var locationSearchBtn = creatBtn(locationSearch);
         } else {
@@ -185,14 +193,15 @@ var createlocationSearchBtn = function(locationSearch) {
     }
 };
 
-//------------------------------------- call functions directly ---------------------------------------//
+// call function
 loadSavedCity();
-//-------------------------- create button with searched city ends here -------------------------------//
-//--------------------------- event handler from submit form starts here ------------------------------//
+
+// event handler
 var formSubmitHandler = function(event) {
     event.preventDefault();
-    // name of the city
-    var locationSearch = $("#searchCity").val().trim();
+
+    // searach
+    var locationSearch = $("#locationSearch").val().trim();
     var loadHistory = savelocationSearch(locationSearch);
     getCurrent(locationSearch);
     if (loadHistory == 1) {
@@ -201,12 +210,13 @@ var formSubmitHandler = function(event) {
 };
 var BtnClickHandler = function(event) {
     event.preventDefault();
-    // name of the city
+
+    // search
     var locationSearch = event.target.textContent.trim();
     getCurrent(locationSearch);
 };
-//--------------------------- event handler from submit form ends here ------------------------------//
-//------------------------ call functions with submit button starts here ----------------------------//
+
+// call functions on submit
 $("#location-form").on("submit", function() {
     formSubmitHandler(event);
 });
