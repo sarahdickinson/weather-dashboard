@@ -20,7 +20,7 @@ var getCurrent = function(locationSearch) {
     fetch(apiUrlCurrent).then(async function(response) {
         if (response.ok) {
             const response_1 = await response.json();
-            $("#location-search").html(response_1.name);
+            $("#currentLocation").html(response_1.name);
             // display current data
             var unixTime = response_1.dt;
             var date = moment.unix(unixTime).format("M/D/YYYY");
@@ -90,22 +90,22 @@ var getForecast = function(lat, lon) {
                 //display forecast data
                 var unixTime = response.daily[i].dt;
                 var date = moment.unix(unixTime).format("M/D/YYYY");
-                $("#forecastDate").html(date);
+                $("#forecastDate" + i).html(date);
 
                 var iconUrl =
                     "http://openweathermap.org/img/wn/" +
                     response.daily[i].weather[0].icon +
                     "@2x.png";
-                $("#forecastIcon").attr("src", iconUrl);
+                $("#forecastIcon" + i).attr("src", iconUrl);
 
                 var temp = response.daily[i].temp.day + " \u00B0F";
-                $("#forecastTemp").html(temp);
+                $("#forecastTemp" + i).html(temp);
 
                 var wind = response.daily[i].wind_speed + " MPH";
-                $("#forecastWind").html(wind);
+                $("#forecastWind" + i).html(wind);
 
                 var humidity = response.daily[i].humidity;
-                $("#forecastHum").html(humidity + " %");
+                $("#forecastHum" + i).html(humidity + " %");
             }
         });
 };
@@ -114,7 +114,7 @@ var getForecast = function(lat, lon) {
 var creatBtn = function(btnText) {
     var btn = $("<button>")
         .text(btnText)
-        .addClass("list-group-item list-group-item-action")
+        .addClass("list-group-item list-group-item-action bg-light")
         .attr("type", "submit");
     return btn;
 };

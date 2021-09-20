@@ -20,12 +20,12 @@
         <div class="row">
             <section class="col-3" id="search-form">
                 <form>
-                    <div class="d-grid">
-                        <label for="location-search">Search for a City:</label></div>
-                    <div class="d-grid gap-3">
+                    <div class="d-grid p-2">
+                        <label for="location-search"><h2>Search for a City:</h2></label></div>
+                    <div class="d-grid  p-2">
                         <input type="text" placeholder="San Diago" name="location" id="location-search" autofocus="true" class="form-input" />
                     </div>
-                    <div class="d-grid gap-3">
+                    <div class="d-grid  p-2">
                         <button type="submit" class="btn btn-primary" id="search-form">
                             Search
                         </button>
@@ -33,15 +33,15 @@
                 </form>
                 <hr>
                 <!-- saved searches -->
-                <li id="saved-search"></li>
+                <li class="list-group d-grid p-2" id="saved-search"></li>
             </section>
 
             <section id="result" class="col-9">
-                <div id="currentWeather" class="card">
+                <div id="currentWeather" class="card border-dark m-3">
                     <!-- locationSearch currentWeather [locationSearch][today][icon][temp][wind][humidity][uv index]-->
                     <div class="card-body">
                         <h2 class="card-title">
-                            <span id="location-search">Location</span>
+                            <span id="currentLocation">Location</span>
                             <span id="currentDate">(M/D/YYYY)</span>
                             <img id="currentIcon" src=""></img>
                         </h2>
@@ -61,21 +61,87 @@
                 </div>
                 <div class="forecast">
                     <h3>5-Day Forecast:</h3>
-                    <div id="forecast-container" class="card list-group">
-                        <p class="card-title">
-                            <span id="forecastdate">(M/D/YYYY)</span>
-                        </p>
-                        <p class="card-text"><img id="forecastIcon" src=""></img>
-                        </p>
-                        <p class="card-text">Temp:
-                            <span id="forecastTemp"></span>
-                        </p>
-                        <p class="card-text">Wind:
-                            <span id="forecastWind"></span>
-                        </p>
-                        <p class="card-text">Humidity:
-                            <span id="forecastHum"></span>
-                        </p>
+                    <div id="forecast-container" class="row justify-content-between">
+                        <div class="col-sm-2 card text-white bg-primary mb-3">
+                            <p class="card-title">
+                                <span id="forecastDate1">(M/D/YYYY)</span>
+                            </p>
+                            <p class="card-text"><img id="forecastIcon1" src=""></img>
+                            </p>
+                            <p class="card-text">Temp:
+                                <span id="forecastTemp1"></span>
+                            </p>
+                            <p class="card-text">Wind:
+                                <span id="forecastWind1"></span>
+                            </p>
+                            <p class="card-text">Humidity:
+                                <span id="forecastHum1"></span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2 card text-white bg-primary mb-3">
+                            <p class="card-title">
+                                <span id="forecastDate2">(M/D/YYYY)</span>
+                            </p>
+                            <p class="card-text"><img id="forecastIcon2" src=""></img>
+                            </p>
+                            <p class="card-text">Temp:
+                                <span id="forecastTemp2"></span>
+                            </p>
+                            <p class="card-text">Wind:
+                                <span id="forecastWind2"></span>
+                            </p>
+                            <p class="card-text">Humidity:
+                                <span id="forecastHum2"></span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2 card text-white bg-primary mb-3">
+                            <p class="card-title">
+                                <span id="forecastDate3">(M/D/YYYY)</span>
+                            </p>
+                            <p class="card-text"><img id="forecastIcon3" src=""></img>
+                            </p>
+                            <p class="card-text">Temp:
+                                <span id="forecastTemp3"></span>
+                            </p>
+                            <p class="card-text">Wind:
+                                <span id="forecastWind3"></span>
+                            </p>
+                            <p class="card-text">Humidity:
+                                <span id="forecastHum3"></span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2 card text-white bg-primary mb-3">
+                            <p class="card-title">
+                                <span id="forecastDate4">(M/D/YYYY)</span>
+                            </p>
+                            <p class="card-text"><img id="forecastIcon4" src=""></img>
+                            </p>
+                            <p class="card-text">Temp:
+                                <span id="forecastTemp4"></span>
+                            </p>
+                            <p class="card-text">Wind:
+                                <span id="forecastWind4"></span>
+                            </p>
+                            <p class="card-text">Humidity:
+                                <span id="forecastHum4"></span>
+                            </p>
+                        </div>
+                        <div class="col-sm-2 card text-white bg-primary mb-3">
+                            <p class="card-title">
+                                <span id="forecastDate5">(M/D/YYYY)</span>
+                            </p>
+                            <p class="card-text"><img id="forecastIcon5" src=""></img>
+                            </p>
+                            <p class="card-text">Temp:
+                                <span id="forecastTemp5"></span>
+                            </p>
+                            <p class="card-text">Wind:
+                                <span id="forecastWind5"></span>
+                            </p>
+                            <p class="card-text">Humidity:
+                                <span id="forecastHum5"></span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
