@@ -90,22 +90,22 @@ var getForecast = function(lat, lon) {
                 //display forecast data
                 var unixTime = response.daily[i].dt;
                 var date = moment.unix(unixTime).format("M/D/YYYY");
-                $("#date" + i).html(date);
+                $("#forecastDate").html(date);
 
                 var iconUrl =
                     "http://openweathermap.org/img/wn/" +
                     response.daily[i].weather[0].icon +
                     "@2x.png";
-                $("#forecastIcon" + i).attr("src", iconUrl);
+                $("#forecastIcon").attr("src", iconUrl);
 
                 var temp = response.daily[i].temp.day + " \u00B0F";
-                $("#forecastTemp" + i).html(temp);
+                $("#forecastTemp").html(temp);
 
                 var wind = response.daily[i].wind_speed + " MPH";
-                $("#forecastWind" + i).html(wind);
+                $("#forecastWind").html(wind);
 
                 var humidity = response.daily[i].humidity;
-                $("#forecastHum" + i).html(humidity + " %");
+                $("#forecastHum").html(humidity + " %");
             }
         });
 };
